@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.15)
 
 project(CMP-104_Fruit_Machine)
 
@@ -12,5 +12,5 @@ endif()
 add_executable(FruitMachine src/main.cpp)
 target_link_libraries(FruitMachine ${CURSES_LIBRARIES})
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
