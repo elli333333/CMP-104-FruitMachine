@@ -9,7 +9,7 @@ else()
 endif()
 
 
-add_executable(FruitMachine main.cpp)
+add_executable(FruitMachine src/main.cpp)
 target_link_libraries(FruitMachine ${CURSES_LIBRARIES})
 
 set(CMAKE_CXX_STANDARD 11)
