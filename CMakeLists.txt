@@ -8,9 +8,9 @@ else()
     include_directories(${CURSES_INCLUDE_DIR})
 endif()
 
-
 add_executable(FruitMachine src/main.cpp)
 target_link_libraries(FruitMachine ${CURSES_LIBRARIES})
+#target_link_libraries(FruitMachine pdcurses)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
