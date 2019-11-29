@@ -123,9 +123,9 @@ void game_logic() {
 
     /* Print main game board */
     box(mainBoard, 0, 0);           /* Draw Border */
-    wprintw(mainBoard, "test");     /* Print Initial output */
-    wrefresh(mainBoard);            /* Refresh and draw */
-
+    wprintw(mainBoard, "");         /* Print Initial output */
+    //wrefresh(mainBoard);            /* Refresh and draw */
+    
     int key;
     while (true) {
         for (int i = 0; i < 3; i++) {
@@ -137,7 +137,8 @@ void game_logic() {
             return;
         }
         else {
-            
+            mvwprintw(mainBoard, 0, 0, "H");
+            wrefresh(mainBoard);
         }
     }
 }

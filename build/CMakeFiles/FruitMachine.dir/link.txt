@@ -1,1 +1,1 @@
-/usr/bin/c++     CMakeFiles/FruitMachine.dir/src/main.cpp.o  -o FruitMachine  -lcurses -lform 
+/usr/bin/g++     CMakeFiles/FruitMachine.dir/src/main.cpp.o  -o FruitMachine  -lcurses -lform 
