@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/smacdonald/Documents/CMP-104_FruitMachine/src/main.cpp
+curses.h
+-
+string
+-
+chrono
+-
+thread
+-
+stdlib.h
+-
+

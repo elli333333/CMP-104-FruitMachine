@@ -109,23 +109,41 @@ void game_logic() {
     int row, col;
     getmaxyx(stdscr, row, col);
     int winRow = (row / 7) + 2, winCol = (col / 7);
+    int mainX = 5, mainY = 5;
 
     /* Define Windows
      * Used for organising and displaying output
      */
     WINDOW * rules = newwin(3, col, 0, 0);
-    WINDOW * mainBoard = newwin(7, 13, winRow, winCol);
+    WINDOW * mainBoard = newwin(mainY, mainX, 7, 13);
+    WINDOW * ColA = newwin((mainY++), (mainX++), 3, 3), *ColB = newwin((mainY++), (mainX+4), 3, 3), *ColC = newwin((mainY++), (mainX+8), 3, 3);
     
     /* Print to rules/instuctions Window */
     wprintw(rules, "Rules");
-    mvwprintw(rules, 1, 0, "LOL");
+    mvwprintw(rules, 1, 0, "Press 'Q' to exit.");
+    mvwprintw(rules, 2, 0, "Press any key to start.");
     wrefresh(rules);
 
-    /* Print main game board */
-    box(mainBoard, 0, 0);           /* Draw Border */
-    wprintw(mainBoard, "");         /* Print Initial output */
-    //wrefresh(mainBoard);            /* Refresh and draw */
+    /* Print the game board */
     
+    /* Draw Border */
+    box(mainBoard, 0, 0);
+    box(ColA, 0, 0);
+    box(ColB, 0, 0);
+    box(ColC, 0, 0);
+    
+    /* Print Initial output */
+    wprintw(mainBoard, "");
+    wprintw(ColA, "");
+    wprintw(ColB, "");
+    wprintw(ColC, "");
+
+    /* Refresh and draw */
+    wrefresh(mainBoard);
+    wrefresh(ColA);
+    wrefresh(ColB);
+    wrefresh(ColC);
+
     int key;
     while (true) {
         for (int i = 0; i < 3; i++) {
@@ -137,8 +155,6 @@ void game_logic() {
             return;
         }
         else {
-            mvwprintw(mainBoard, 0, 0, "H");
-            wrefresh(mainBoard);
         }
     }
 }
