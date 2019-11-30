@@ -158,9 +158,7 @@ void game_logic() {
             dinit();
             return;
         }
-        else if (wgetch(mainBoard) == ERR) {
-            ;
-        }
+        
         else if (toupper(wgetch(mainBoard)) == 'S') {
             while(is_Pressed == false) {
                 for (int i = 0; i < 3; i++) {
