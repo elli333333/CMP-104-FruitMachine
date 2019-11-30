@@ -109,19 +109,19 @@ void game_logic() {
     int row, col;
     getmaxyx(stdscr, row, col);
     int winRow = (row / 7) + 2, winCol = (col / 7);
-    int mainX = 5, mainY = 5;
+    int mainX = 5, mainY = 4;
 
     /* Define Windows
      * Used for organising and displaying output
      */
     WINDOW * rules = newwin(3, col, 0, 0);
-    WINDOW * mainBoard = newwin(mainY, mainX, 7, 13);
-    WINDOW * ColA = newwin((mainY++), (mainX++), 3, 3), *ColB = newwin((mainY++), (mainX+4), 3, 3), *ColC = newwin((mainY++), (mainX+8), 3, 3);
+    WINDOW * mainBoard = newwin(9, 13, mainY, mainX);
+    WINDOW * ColA = newwin(5, 3, mainY+2, mainX+2), *ColB = newwin(5, 3, mainY+2, mainX+5), *ColC = newwin(5, 3, mainY+2, mainX+8);
     
     /* Print to rules/instuctions Window */
-    wprintw(rules, "Rules");
+    wprintw(rules, "Rules:");
     mvwprintw(rules, 1, 0, "Press 'Q' to exit.");
-    mvwprintw(rules, 2, 0, "Press any key to start.");
+    mvwprintw(rules, 2, 0, "Press 'S' key to start.");
     wrefresh(rules);
 
     /* Print the game board */
@@ -138,24 +138,46 @@ void game_logic() {
     wprintw(ColB, "");
     wprintw(ColC, "");
 
+    // mvwprintw(mainBoard, 1, 1, "+");
+
     /* Refresh and draw */
     wrefresh(mainBoard);
     wrefresh(ColA);
     wrefresh(ColB);
     wrefresh(ColC);
 
+    /* set buffer mode */
+    nocbreak();
+    halfdelay(1);
+
+    bool running = true, is_Pressed = false;
     int key;
-    while (true) {
-        for (int i = 0; i < 3; i++) {
-            iIndices[i] = rand() % 9 + 1;
-        }
+    while (running == true) {
         key = toupper(wgetch(mainBoard));
         if (key == 'Q') {
             dinit();
             return;
         }
-        else {
+        else if (wgetch(mainBoard) == ERR) {
+            ;
         }
+        else if (toupper(wgetch(mainBoard)) == 'S') {
+            while(is_Pressed == false) {
+                for (int i = 0; i < 3; i++) {
+                    iIndices[i] = rand() % 9 + 1;
+                }
+                if (wgetch(mainBoard) != ERR) {
+                    is_Pressed = true;
+                }
+                else {
+                    mvwprintw(ColA, 1, 1, "H");
+                    wrefresh(ColA);
+                }
+            }
+        }
+        else{
+            ;
+        }
+        
     }
 }
-
