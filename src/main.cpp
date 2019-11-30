@@ -5,7 +5,7 @@
  * This uses ncurses for *Nix and PDCurses (https://pdcurses.org/) for Win32 
  */
 
-#include <curses.h>
+#include "PDCurses/curses.h"
 
 #include <string>
 
