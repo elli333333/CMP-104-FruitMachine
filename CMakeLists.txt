@@ -2,12 +2,8 @@ cmake_minimum_required(VERSION 3.15)
 
 project(CMP-104_Fruit_Machine)
 
-add_library(PDCurses STATIC src/PDCurses/curses.h)
-if(MSVC)
-else()
-    find_package(Curses REQUIRED)
-    include_directories(${CURSES_INCLUDE_DIR})
-endif()
+find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIR})
     
 add_executable(FruitMachine src/main.cpp)
 target_link_libraries(FruitMachine ${CURSES_LIBRARIES})
