@@ -7,12 +7,12 @@
 
 #include <curses.h>
 
+#include <stdlib.h>
 #include <string>
 
+/* Both libraries used in combination for sleep */
 #include <chrono> 
-#include <thread> /* both libraries used in combination for sleep */
-
-#include <stdlib.h>
+#include <thread>
 
 using namespace std;
 
@@ -33,8 +33,14 @@ void init(int t) {
      * Sets up the window, and finaly prints welcome message
      * takes int t - time(ms) to sleep after init
      */
-    initscr();  /* starts curses */
-    noecho();   /* suppresses character echos */
+
+    /* Starts curses */
+    initscr();
+
+    /* Suppresses character echos */
+    noecho();
+
+    /* Sets Terminal mode */
     cbreak();
     
     printw("Hello World!");
@@ -48,7 +54,7 @@ void init(int t) {
 
 void dinit() {
     /*
-     * The opposite of init()
+     * The opposite of init(),
      * takes no args, clears the screen and exits curses
      */
 
@@ -89,7 +95,10 @@ void game_logic() {
      *  -   symbol table used in display
      *  -   and code used to determine the size of the terminal
      */
-    const char c_symbol_table[] = {       /* Define Symbol Table to be used for program */
+
+
+    /* Define Symbol Table to be used for program */
+    const char c_symbol_table[] = {
         '1',
         '2',
         '3',
@@ -142,15 +151,13 @@ void game_logic() {
     wprintw(col_b, "");
     wprintw(col_c, "");
 
-    // mvwprintw(main_board, 1, 1, "+");
-
     /* Refresh and draw */
     wrefresh(main_board);
     wrefresh(col_a);
     wrefresh(col_b);
     wrefresh(col_c);
 
-    /* set buffer mode */
+    /* Change terminal mode such that getch is minimally blocking*/
     nocbreak();
     halfdelay(1);
 
@@ -229,20 +236,24 @@ void game_logic() {
             if (!a_running && !b_running && !c_running) {
                 mvwprintw(stdscr,12, 1, "Game over!");
                 
-                if (column_a_row_b == column_b_row_b && column_b_row_b == column_c_row_b && column_a_row_b == column_c_row_b) {
+                if (column_a_row_b == column_b_row_b &&
+                        column_b_row_b == column_c_row_b &&
+                        column_a_row_b == column_c_row_b) {
                     mvwprintw(stdscr, 13, 1, "All match!");
                     mvwprintw(stdscr, 14, 1, "Congradulations");
                 }
-                else if (column_a_row_b == column_b_row_b || column_b_row_b == column_c_row_b || column_a_row_b == column_c_row_b) {
+                else if (column_a_row_b == column_b_row_b ||
+                            column_b_row_b == column_c_row_b ||
+                            column_a_row_b == column_c_row_b) {
                     mvwprintw(stdscr, 13, 1, "Two match!");
                     mvwprintw(stdscr, 14, 1, "Well Done");
                 }
-                else if (column_a_row_b != column_b_row_b && column_b_row_b != column_c_row_b && column_a_row_b != column_c_row_b) {
+                else if (column_a_row_b != column_b_row_b
+                        && column_b_row_b != column_c_row_b
+                        && column_a_row_b != column_c_row_b) {
                     mvwprintw(stdscr, 13, 1, "No matches");
                     mvwprintw(stdscr, 14, 1, "Commiserations");
                 }
-                
-                mvwprintw(stdscr, 15, 1, (c_symbol_table + i_indices[0]));
                 
                 nocbreak();
                 cbreak();

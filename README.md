@@ -45,7 +45,7 @@ Option 2:
 ## Design decisions
 - As all my PCs are linux based I needed to write this project in such a way that it would work on linux 
    - i.e without ``` Windows.h ``` or ``` conio.h ```
-- My first idea was to use no libraries and just use different code depending on which OS it was built on 
+- My first idea was to use no libraries and just use different code depending on which OS it    was built on 
   - see src/Take1.cpp
   - this used preprocessor directives to select diffent parts of the code depending on OS
   - it was scraped due to there being no common way of easily getting input
@@ -67,3 +67,5 @@ Option 2:
   - Accounts
   - Unicode
 
+## Know Issues
+- When displaying characters, the characters address is printed rather than the character its   self
