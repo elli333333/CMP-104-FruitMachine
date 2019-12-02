@@ -60,15 +60,15 @@ include CMakeFiles/FruitMachine.dir/flags.make
 CMakeFiles/FruitMachine.dir/src/main.cpp.o: CMakeFiles/FruitMachine.dir/flags.make
 CMakeFiles/FruitMachine.dir/src/main.cpp.o: ../src/main.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/smacdonald/Documents/CMP-104_FruitMachine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/FruitMachine.dir/src/main.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FruitMachine.dir/src/main.cpp.o -c /home/smacdonald/Documents/CMP-104_FruitMachine/src/main.cpp
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/FruitMachine.dir/src/main.cpp.o -c /home/smacdonald/Documents/CMP-104_FruitMachine/src/main.cpp
 
 CMakeFiles/FruitMachine.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/FruitMachine.dir/src/main.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smacdonald/Documents/CMP-104_FruitMachine/src/main.cpp > CMakeFiles/FruitMachine.dir/src/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/smacdonald/Documents/CMP-104_FruitMachine/src/main.cpp > CMakeFiles/FruitMachine.dir/src/main.cpp.i
 
 CMakeFiles/FruitMachine.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/FruitMachine.dir/src/main.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smacdonald/Documents/CMP-104_FruitMachine/src/main.cpp -o CMakeFiles/FruitMachine.dir/src/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/smacdonald/Documents/CMP-104_FruitMachine/src/main.cpp -o CMakeFiles/FruitMachine.dir/src/main.cpp.s
 
 # Object files for target FruitMachine
 FruitMachine_OBJECTS = \

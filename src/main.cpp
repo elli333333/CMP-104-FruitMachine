@@ -89,7 +89,7 @@ void game_logic() {
      *  -   symbol table used in display
      *  -   and code used to determine the size of the terminal
      */
-    const char cSymbolTable[] = {       /* Define Symbol Table to be used for program */
+    const char c_symbol_table[] = {       /* Define Symbol Table to be used for program */
         '1',
         '2',
         '3',
@@ -101,7 +101,10 @@ void game_logic() {
         '9',
     };
 
-    int iIndices[3];
+    const char * ptr_symbol_table;
+    ptr_symbol_table = c_symbol_table;
+
+    int i_Indices[9];
     clear();
     refresh();
 
@@ -109,39 +112,40 @@ void game_logic() {
     int row, col;
     getmaxyx(stdscr, row, col);
     int winRow = (row / 7) + 2, winCol = (col / 7);
-    int mainX = 5, mainY = 4;
+    int mainX = 5, mainY = 5;
 
     /* Define Windows
      * Used for organising and displaying output
      */
     WINDOW * rules = newwin(3, col, 0, 0);
-    WINDOW * mainBoard = newwin(9, 13, mainY, mainX);
+    WINDOW * main_board = newwin(9, 13, mainY, mainX);
     WINDOW * ColA = newwin(5, 3, mainY+2, mainX+2), *ColB = newwin(5, 3, mainY+2, mainX+5), *ColC = newwin(5, 3, mainY+2, mainX+8);
     
     /* Print to rules/instuctions Window */
     wprintw(rules, "Rules:");
     mvwprintw(rules, 1, 0, "Press 'Q' to exit.");
     mvwprintw(rules, 2, 0, "Press 'S' key to start.");
+    mvwprintw(rules, 3, 0, "Press a number or 'a', 'b' or 'c' key to stop the corrosponding column.");
     wrefresh(rules);
 
     /* Print the game board */
     
     /* Draw Border */
-    box(mainBoard, 0, 0);
+    box(main_board, 0, 0);
     box(ColA, 0, 0);
     box(ColB, 0, 0);
     box(ColC, 0, 0);
     
     /* Print Initial output */
-    wprintw(mainBoard, "");
+    wprintw(main_board, "");
     wprintw(ColA, "");
     wprintw(ColB, "");
     wprintw(ColC, "");
 
-    // mvwprintw(mainBoard, 1, 1, "+");
+    // mvwprintw(main_board, 1, 1, "+");
 
     /* Refresh and draw */
-    wrefresh(mainBoard);
+    wrefresh(main_board);
     wrefresh(ColA);
     wrefresh(ColB);
     wrefresh(ColC);
@@ -150,34 +154,105 @@ void game_logic() {
     nocbreak();
     halfdelay(1);
 
-    bool running = true, is_Pressed = false;
-    int key;
-    while (running == true) {
-        key = toupper(wgetch(mainBoard));
-        if (key == 'Q') {
-            dinit();
-            return;
-        }
-        
-        else if (toupper(wgetch(mainBoard)) == 'S') {
-            while(is_Pressed == false) {
-                for (int i = 0; i < 3; i++) {
-                    iIndices[i] = rand() % 9 + 1;
+    bool running = true;
+    bool is_Pressed = false;
+
+    bool a_running = true;
+    bool b_running = true;
+    bool c_running = true;
+
+    int key = tolower(wgetch(main_board));
+
+    if (key == 'q') {
+        dinit();
+        return;
+    }
+    else {
+        while (running) {
+            key = tolower(wgetch(main_board));
+
+            switch (key) {
+            case '1':
+            case 'a':
+                a_running = false;
+                break;
+
+            case '2':
+            case 'b':
+                b_running = false;
+                break;
+
+            case '3':
+            case 'c':
+                c_running = false;
+                break;
+
+            case 'q':
+                a_running = false;
+                b_running = false;
+                c_running = false;
+
+            default:
+                break;
+            }
+
+            for (int i = 0; i < 9; i++) {
+                i_Indices[i] = rand() % 9;
+            }
+
+
+            const char Column_a_Row_b = c_symbol_table[i_Indices[1]];
+            const char Column_b_Row_b = c_symbol_table[i_Indices[4]];
+            const char Column_c_Row_b = c_symbol_table[i_Indices[7]];
+
+            if (a_running) {
+                mvwprintw(ColA, 1, 1, (c_symbol_table + i_Indices[0]));
+                mvwprintw(ColA, 1, 1, (c_symbol_table + i_Indices[1]));
+                mvwprintw(ColA, 1, 1, (c_symbol_table + i_Indices[2]));
+                wrefresh(ColA);
+            }
+
+            if (b_running) {
+                mvwprintw(ColB, 1, 1, (c_symbol_table + i_Indices[3]));
+                mvwprintw(ColB, 1, 1, (c_symbol_table + i_Indices[4]));
+                mvwprintw(ColB, 1, 1, (c_symbol_table + i_Indices[5]));
+                wrefresh(ColB);
+            }
+
+            if (c_running) {
+                mvwprintw(ColC, 1, 1, (c_symbol_table + i_Indices[6]));
+                mvwprintw(ColC, 1, 1, (c_symbol_table + i_Indices[7]));
+                mvwprintw(ColC, 1, 1, (c_symbol_table + i_Indices[8]));
+                wrefresh(ColC);
+            }
+
+            if (!a_running && !b_running && !c_running) {
+                mvwprintw(stdscr,12, 1, "Game over!");
+                
+                if (Column_a_Row_b == Column_b_Row_b && Column_b_Row_b == Column_c_Row_b && Column_a_Row_b == Column_c_Row_b) {
+                    mvwprintw(stdscr, 13, 1, "All match!");
+                    mvwprintw(stdscr, 14, 1, "Congradulations");
                 }
-                if (wgetch(mainBoard) != ERR) {
-                    is_Pressed = true;
+                else if (Column_a_Row_b == Column_b_Row_b || Column_b_Row_b == Column_c_Row_b || Column_a_Row_b == Column_c_Row_b) {
+                    mvwprintw(stdscr, 13, 1, "Two match!");
+                    mvwprintw(stdscr, 14, 1, "Well Done");
                 }
-                else {
-                    mvwprintw(ColA, 1, 1, cSymbolTable[1]);
-                    // mvwprintw(ColA, 2, 1, cSymbolTable[iIndices[0]]);
-                    // mvwprintw(ColA, 3, 1, cSymbolTable[iIndices[0]]);
-                    wrefresh(ColA);
+                else if (Column_a_Row_b != Column_b_Row_b && Column_b_Row_b != Column_c_Row_b && Column_a_Row_b != Column_c_Row_b) {
+                    mvwprintw(stdscr, 13, 1, "No matches");
+                    mvwprintw(stdscr, 14, 1, "Commiserations");
                 }
+                
+                mvwprintw(stdscr, 15, 1, (c_symbol_table + i_Indices[0]));
+                
+                nocbreak();
+                cbreak();
+                wrefresh(stdscr);
+                getch();
+                dinit();
+                return;
             }
         }
-        else{
-            ;
-        }
-        
+
     }
+
 }

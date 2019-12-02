@@ -89,7 +89,7 @@ void game_logic() {
      *  -   symbol table used in display
      *  -   and code used to determine the size of the terminal
      */
-    const char cSymbolTable[] = {       /* Define Symbol Table to be used for program */
+    const char c_symbol_table[] = {       /* Define Symbol Table to be used for program */
         '1',
         '2',
         '3',
@@ -100,6 +100,9 @@ void game_logic() {
         '8',
         '9',
     };
+
+    const char * ptr_symbol_table;
+    ptr_symbol_table = c_symbol_table;
 
     int iIndices[3];
     clear();
@@ -115,7 +118,7 @@ void game_logic() {
      * Used for organising and displaying output
      */
     WINDOW * rules = newwin(3, col, 0, 0);
-    WINDOW * mainBoard = newwin(9, 13, mainY, mainX);
+    WINDOW * main_board = newwin(9, 13, mainY, mainX);
     WINDOW * ColA = newwin(5, 3, mainY+2, mainX+2), *ColB = newwin(5, 3, mainY+2, mainX+5), *ColC = newwin(5, 3, mainY+2, mainX+8);
     
     /* Print to rules/instuctions Window */
@@ -127,21 +130,21 @@ void game_logic() {
     /* Print the game board */
     
     /* Draw Border */
-    box(mainBoard, 0, 0);
+    box(main_board, 0, 0);
     box(ColA, 0, 0);
     box(ColB, 0, 0);
     box(ColC, 0, 0);
     
     /* Print Initial output */
-    wprintw(mainBoard, "");
+    wprintw(main_board, "");
     wprintw(ColA, "");
     wprintw(ColB, "");
     wprintw(ColC, "");
 
-    // mvwprintw(mainBoard, 1, 1, "+");
+    // mvwprintw(main_board, 1, 1, "+");
 
     /* Refresh and draw */
-    wrefresh(mainBoard);
+    wrefresh(main_board);
     wrefresh(ColA);
     wrefresh(ColB);
     wrefresh(ColC);
@@ -150,28 +153,50 @@ void game_logic() {
     nocbreak();
     halfdelay(1);
 
-    bool running = true, is_Pressed = false;
+    bool running = true;
+    bool is_Pressed = false;
+
+    bool a_running = true;
+    bool b_running = true;
+    bool c_running = true;
+
     int key;
+
     while (running == true) {
-        key = toupper(wgetch(mainBoard));
+        key = toupper(wgetch(main_board));
         if (key == 'Q') {
             dinit();
             return;
         }
         
-        else if (toupper(wgetch(mainBoard)) == 'S') {
+        else if (toupper(wgetch(main_board)) == 'S') {
+            key = 'S';
             while(is_Pressed == false) {
                 for (int i = 0; i < 3; i++) {
                     iIndices[i] = rand() % 9 + 1;
                 }
-                if (wgetch(mainBoard) != ERR) {
+                if (wgetch(main_board) != ERR) {
                     is_Pressed = true;
                 }
                 else {
-                    mvwprintw(ColA, 1, 1, cSymbolTable[1]);
-                    // mvwprintw(ColA, 2, 1, cSymbolTable[iIndices[0]]);
-                    // mvwprintw(ColA, 3, 1, cSymbolTable[iIndices[0]]);
+                    if (a_running) {
+                    mvwprintw(ColA, 1, 1, (ptr_symbol_table + iIndices[0]));
+                    mvwprintw(ColA, 1, 1, (ptr_symbol_table + iIndices[0]));
+                    mvwprintw(ColA, 1, 1, (ptr_symbol_table + iIndices[0]));
                     wrefresh(ColA);
+                    }
+                    if (b_running) {
+                    mvwprintw(ColB, 1, 1, (ptr_symbol_table + iIndices[1]));
+                    mvwprintw(ColB, 1, 1, (ptr_symbol_table + iIndices[1]));
+                    mvwprintw(ColB, 1, 1, (ptr_symbol_table + iIndices[1]));
+                    wrefresh(ColB);
+                    }
+                    if (b_running) {
+                    mvwprintw(ColC, 1, 1, (ptr_symbol_table + iIndices[2]));
+                    mvwprintw(ColC, 1, 1, (ptr_symbol_table + iIndices[2]));
+                    mvwprintw(ColC, 1, 1, (ptr_symbol_table + iIndices[2]));
+                    wrefresh(ColC);
+                    }
                 }
             }
         }

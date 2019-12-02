@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>PDCurses-3.9;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Stuart Macdonald\Downloads\PDCurses-3.9\PDCurses-3.9\wincon;$(LibraryPath)</LibraryPath>
+    <LibraryPath>PDCurses-3.9\wincon;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
