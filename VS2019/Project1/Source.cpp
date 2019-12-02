@@ -7,12 +7,12 @@
 
 #include <curses.h>
 
+#include <stdlib.h>
 #include <string>
 
+/* Both libraries used in combination for sleep */
 #include <chrono> 
-#include <thread> /* both libraries used in combination for sleep */
-
-#include <stdlib.h>
+#include <thread>
 
 using namespace std;
 
@@ -33,8 +33,14 @@ void init(int t) {
      * Sets up the window, and finaly prints welcome message
      * takes int t - time(ms) to sleep after init
      */
-    initscr();  /* starts curses */
-    noecho();   /* suppresses character echos */
+
+    /* Starts curses */
+    initscr();
+
+    /* Suppresses character echos */
+    noecho();
+
+    /* Sets Terminal mode */
     cbreak();
     
     printw("Hello World!");
@@ -48,7 +54,7 @@ void init(int t) {
 
 void dinit() {
     /*
-     * The opposite of init()
+     * The opposite of init(),
      * takes no args, clears the screen and exits curses
      */
 
@@ -66,11 +72,11 @@ int main() {
      */
     init(500);
 
-    printw("Hello World!, Press 'C' to continue, Anything else to exit.");
+    printw("Hello World!, Press 'S' to continue, Anything else to exit.");
     refresh();
 
-    int key = toupper(getch());
-    if (key == 'C') {
+    int key = tolower(getch());
+    if (key == 's') {
         game_logic();
         dinit();
         return 0;
@@ -89,7 +95,10 @@ void game_logic() {
      *  -   symbol table used in display
      *  -   and code used to determine the size of the terminal
      */
-    const char c_symbol_table[] = {       /* Define Symbol Table to be used for program */
+
+
+    /* Define Symbol Table to be used for program */
+    const char c_symbol_table[] = {
         '1',
         '2',
         '3',
@@ -101,108 +110,161 @@ void game_logic() {
         '9',
     };
 
-    const char * ptr_symbol_table;
-    ptr_symbol_table = c_symbol_table;
-
-    int iIndices[3];
+    int i_indices[9];
     clear();
     refresh();
 
     /* Determine screen size */
     int row, col;
     getmaxyx(stdscr, row, col);
-    int winRow = (row / 7) + 2, winCol = (col / 7);
-    int mainX = 5, mainY = 4;
+    int main_x = 5;
+    int main_y = 5;
 
-    /* Define Windows
+    /* 
+     * Define Windows
      * Used for organising and displaying output
      */
     WINDOW * rules = newwin(3, col, 0, 0);
-    WINDOW * main_board = newwin(9, 13, mainY, mainX);
-    WINDOW * ColA = newwin(5, 3, mainY+2, mainX+2), *ColB = newwin(5, 3, mainY+2, mainX+5), *ColC = newwin(5, 3, mainY+2, mainX+8);
+    WINDOW * main_board = newwin(9, 13, main_y, main_x);
+    WINDOW * col_a = newwin(5, 3, (main_y + 2), (main_x + 2));
+    WINDOW * col_b = newwin(5, 3, (main_y + 2), (main_x + 5));
+    WINDOW * col_c = newwin(5, 3, (main_y + 2), (main_x + 8));
     
     /* Print to rules/instuctions Window */
     wprintw(rules, "Rules:");
     mvwprintw(rules, 1, 0, "Press 'Q' to exit.");
     mvwprintw(rules, 2, 0, "Press 'S' key to start.");
+    mvwprintw(rules, 3, 0, "Press a number or 'A', 'B' or 'C' key to stop the corrosponding column.");
     wrefresh(rules);
 
     /* Print the game board */
     
     /* Draw Border */
     box(main_board, 0, 0);
-    box(ColA, 0, 0);
-    box(ColB, 0, 0);
-    box(ColC, 0, 0);
+    box(col_a, 0, 0);
+    box(col_b, 0, 0);
+    box(col_c, 0, 0);
     
     /* Print Initial output */
     wprintw(main_board, "");
-    wprintw(ColA, "");
-    wprintw(ColB, "");
-    wprintw(ColC, "");
-
-    // mvwprintw(main_board, 1, 1, "+");
+    wprintw(col_a, "");
+    wprintw(col_b, "");
+    wprintw(col_c, "");
 
     /* Refresh and draw */
     wrefresh(main_board);
-    wrefresh(ColA);
-    wrefresh(ColB);
-    wrefresh(ColC);
+    wrefresh(col_a);
+    wrefresh(col_b);
+    wrefresh(col_c);
 
-    /* set buffer mode */
+    /* Change terminal mode such that getch is minimally blocking*/
     nocbreak();
     halfdelay(1);
 
     bool running = true;
-    bool is_Pressed = false;
+    bool is_pressed = false;
 
     bool a_running = true;
     bool b_running = true;
     bool c_running = true;
 
-    int key;
+    int key = tolower(wgetch(main_board));
 
-    while (running == true) {
-        key = toupper(wgetch(main_board));
-        if (key == 'Q') {
-            dinit();
-            return;
-        }
-        
-        else if (toupper(wgetch(main_board)) == 'S') {
-            key = 'S';
-            while(is_Pressed == false) {
-                for (int i = 0; i < 3; i++) {
-                    iIndices[i] = rand() % 9 + 1;
-                }
-                if (wgetch(main_board) != ERR) {
-                    is_Pressed = true;
-                }
-                else {
-                    if (a_running) {
-                    mvwprintw(ColA, 1, 1, (ptr_symbol_table + iIndices[0]));
-                    mvwprintw(ColA, 1, 1, (ptr_symbol_table + iIndices[0]));
-                    mvwprintw(ColA, 1, 1, (ptr_symbol_table + iIndices[0]));
-                    wrefresh(ColA);
-                    }
-                    if (b_running) {
-                    mvwprintw(ColB, 1, 1, (ptr_symbol_table + iIndices[1]));
-                    mvwprintw(ColB, 1, 1, (ptr_symbol_table + iIndices[1]));
-                    mvwprintw(ColB, 1, 1, (ptr_symbol_table + iIndices[1]));
-                    wrefresh(ColB);
-                    }
-                    if (b_running) {
-                    mvwprintw(ColC, 1, 1, (ptr_symbol_table + iIndices[2]));
-                    mvwprintw(ColC, 1, 1, (ptr_symbol_table + iIndices[2]));
-                    mvwprintw(ColC, 1, 1, (ptr_symbol_table + iIndices[2]));
-                    wrefresh(ColC);
-                    }
-                }
-            }
-        }
-        else{
-            ;
-        }
-        
+    if (key == 'q') {
+        dinit();
+        return;
     }
+    else {
+        while (running) {
+            key = tolower(wgetch(main_board));
+
+            switch (key) {
+            case '1':
+            case 'a':
+                a_running = false;
+                break;
+
+            case '2':
+            case 'b':
+                b_running = false;
+                break;
+
+            case '3':
+            case 'c':
+                c_running = false;
+                break;
+
+            case 'q':
+                a_running = false;
+                b_running = false;
+                c_running = false;
+
+            default:
+                break;
+            }
+
+            for (int i = 0; i < 9; i++) {
+                i_indices[i] = rand() % 9;
+            }
+
+
+            const char column_a_row_b = c_symbol_table[i_indices[1]];
+            const char column_b_row_b = c_symbol_table[i_indices[4]];
+            const char column_c_row_b = c_symbol_table[i_indices[7]];
+
+            if (a_running) {
+                mvwprintw(col_a, 1, 1, (c_symbol_table + i_indices[0]));
+                mvwprintw(col_a, 1, 1, (c_symbol_table + i_indices[1]));
+                mvwprintw(col_a, 1, 1, (c_symbol_table + i_indices[2]));
+                wrefresh(col_a);
+            }
+
+            if (b_running) {
+                mvwprintw(col_b, 1, 1, (c_symbol_table + i_indices[3]));
+                mvwprintw(col_b, 1, 1, (c_symbol_table + i_indices[4]));
+                mvwprintw(col_b, 1, 1, (c_symbol_table + i_indices[5]));
+                wrefresh(col_b);
+            }
+
+            if (c_running) {
+                mvwprintw(col_c, 1, 1, (c_symbol_table + i_indices[6]));
+                mvwprintw(col_c, 1, 1, (c_symbol_table + i_indices[7]));
+                mvwprintw(col_c, 1, 1, (c_symbol_table + i_indices[8]));
+                wrefresh(col_c);
+            }
+
+            if (!a_running && !b_running && !c_running) {
+                mvwprintw(stdscr,12, 1, "Game over!");
+                
+                if (column_a_row_b == column_b_row_b &&
+                        column_b_row_b == column_c_row_b &&
+                        column_a_row_b == column_c_row_b) {
+                    mvwprintw(stdscr, 13, 1, "All match!");
+                    mvwprintw(stdscr, 14, 1, "Congradulations");
+                }
+                else if (column_a_row_b == column_b_row_b ||
+                            column_b_row_b == column_c_row_b ||
+                            column_a_row_b == column_c_row_b) {
+                    mvwprintw(stdscr, 13, 1, "Two match!");
+                    mvwprintw(stdscr, 14, 1, "Well Done");
+                }
+                else if (column_a_row_b != column_b_row_b
+                        && column_b_row_b != column_c_row_b
+                        && column_a_row_b != column_c_row_b) {
+                    mvwprintw(stdscr, 13, 1, "No matches");
+                    mvwprintw(stdscr, 14, 1, "Commiserations");
+                }
+                
+                nocbreak();
+                cbreak();
+                wrefresh(stdscr);
+                getch();
+                dinit();
+                return;
+            }
+            
+        }
+
+    }
+
 }
