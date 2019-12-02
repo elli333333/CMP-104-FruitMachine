@@ -67,5 +67,6 @@ Option 2:
   - Accounts
   - Unicode
 
+---
 ## Know Issues
 - When displaying characters, the characters address is printed rather than the character its   self
