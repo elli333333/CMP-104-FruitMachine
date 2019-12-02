@@ -5,7 +5,7 @@
  * This uses ncurses for *Nix and PDCurses (https://pdcurses.org/) for Win32 
  */
 
-#include "PDCurses/curses.h"
+#include <curses.h>
 
 #include <string>
 
@@ -168,7 +168,9 @@ void game_logic() {
                     is_Pressed = true;
                 }
                 else {
-                    mvwprintw(ColA, 1, 1, "H");
+                    mvwprintw(ColA, 1, 1, cSymbolTable[1]);
+                    // mvwprintw(ColA, 2, 1, cSymbolTable[iIndices[0]]);
+                    // mvwprintw(ColA, 3, 1, cSymbolTable[iIndices[0]]);
                     wrefresh(ColA);
                 }
             }
